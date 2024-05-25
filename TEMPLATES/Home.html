@@ -1,0 +1,407 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home page</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+</head>
+<style>
+    @import url('https://fonts.cdnfonts.com/css/general-sans');
+    *
+    {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'General Sans';
+        letter-spacing: .1rem;
+        transition: all 500ms ease-in-out;
+    }
+    
+    ::-webkit-scrollbar
+    {
+        width: .5rem;
+        height: .5rem;
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb
+    {
+        background-color: black;
+        border-radius: 8px;
+    }
+    body
+    {
+        position: relative;
+        width: 100vw;
+        height:max-content;
+        overflow-x: hidden;
+    }
+    .welcomeMessage
+    {
+        width: 25vw;
+        height: 20vh;
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        align-items:center;
+        justify-content: center;
+    }
+    .welcomeMessageImage
+    {
+        width: 15rem;
+        height: 12rem;
+    }
+    .title
+    {
+        font-size: 1rem;
+        font-weight: bold;
+        color:#e60000;
+    }
+    .desc
+    {
+        width: 25rem;
+        text-align: center;
+        color:white;
+    }
+    .containerOfwelcome
+    {
+        display: flex;
+        gap: 20rem;
+        width: max-content;
+        
+        padding-top:0rem;
+        height: fit-content;
+        margin-top:-2rem;
+    }
+    .window
+    {
+        width: 55vw;
+        height: 80vh;
+        align-items:center;
+        display:flex;
+        overflow: visible;
+        margin-left:18rem;
+        background-color:black;
+        border-radius:10px;
+        margin-top:3.5rem;
+        position: relative;
+        padding-left:13rem;
+        overflow:hidden;
+    }
+    .Continue
+    {
+        bottom:1rem;
+        left:40%;
+        position: absolute;
+        padding: .8rem 1.2em;
+        width: 10rem;
+        background-color: red;
+        outline: none;
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .swiperthemp
+    {
+        display: flex;
+        position: absolute;
+        bottom: 4.5rem;
+        left: 40%;
+        z-index: 9999;
+        gap:.5rem;
+    }
+    .swiperthemp p
+    {
+        width: 3rem;
+        height: 4px;
+        background-color: silver;
+    }
+    .active
+    {
+        background-color:#e60000 !important;
+    }
+    .backgroundBlur {
+        backdrop-filter: blur(5px);
+        position: absolute;
+        z-index: -1;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.3); /* خلفية شفافة قليلاً */
+        top: 0;
+        left: 0;
+    }
+    
+    .ship {
+        width: 20rem;
+        height: 20rem;
+        border-radius: 20px;
+        position: absolute;
+        z-index: -2;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ظل خفيف لإبراز الشكل */
+        transition: transform 0.3s ease, box-shadow 0.3s ease; /* تأثير حركة ناعمة */
+    }
+    .shred {
+        background-color: red;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-90%);
+        box-shadow: 0px 0px 30px 30px red;
+        rotate: -5deg;
+    }
+    .shblue {
+        rotate: 5deg;
+        background-color: blue;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-20%);
+        box-shadow: 0px 0px 30px 30px blue;
+    }
+    .welcome
+    {
+    display:none !important ;
+    }
+    .header {
+        background-color: white;
+        color: white;
+        padding: .2rem .4rem;
+        position: relative;
+        
+    }
+    .userImage
+    {
+        width: 5rem;
+        height: 4rem;
+        border-radius:50%;
+    }
+    .userImagelink
+    {
+        position: absolute;
+        right:2rem;
+    }
+    .icon
+    {
+        width: 6rem;
+        height: 4rem;
+    }
+    header
+    {
+        background-color: white;
+        padding: 0rem .5rem;
+        width: 100vw;
+        position: relative;
+    }
+    .userImage
+    {
+        border-radius: 50%;
+        width: 3rem;
+        height: 3rem;
+        position: absolute;
+        right: 1rem;
+        top:.5rem;
+    }
+    .firstSection
+    {
+        width: 100vw;
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        display:flex;
+        flex-direction:column;
+        gap:1rem
+    }
+    .background
+    {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 1;
+        filter: brightness(.3);
+        position: absolute;
+        z-index: -5;
+    }
+    .welcomeCon {
+        text-align: center;
+        margin-bottom: 20px;
+        
+    }
+    .navigation {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .navigation a {
+        display: inline-block;
+        text-decoration: none;
+        color: gray;
+        background-color: transparent;
+        border: 2px solid #e60000;
+        padding: 10px 20px;
+        margin: 0 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+    .navigation a:hover {
+        background-color: #e60000;
+        color: white;
+    }
+    
+    .process
+    {
+        display: flex;
+        gap: 1rem;
+        width: 50%;
+        height: fit-content;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        border-radius:10px;
+        outline: 3px solid rgba(255, 255, 255, 0.788);
+    }
+    .lastTranfers
+    {
+        display: flex;
+        flex-direction: column;
+        width: 50vw;
+        height: 30vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        padding: .5rem 1rem;
+        align-items: center;
+        justify-content: center;
+        margin:auto;
+        gap:2rem;
+        
+    }
+    .lastTranfersCon
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top:5rem;
+        gap:3rem;
+        margin-bottom:5rem;
+    }
+    .imageTrans
+    {
+        width: 6rem;
+        height: 5rem;
+    }
+    .contDet
+    {
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+    footer {
+        border-radius: 25px 25px 0px 0px;
+        padding: 1rem 2rem;
+        background-color: rgb(19, 18, 18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      footer p {
+        color: rgb(255, 251, 251);
+      }
+</style>
+<body>
+    <div class="backgroundBlur welcome"></div>
+    <div class="ship shred welcome"></div>
+    <div class="ship shblue welcome"></div>
+    <div class="welcome">
+    <div class="window">
+        <div class="containerOfwelcome" style="margin-left:0;">
+            <div class="welcomeMessage">
+                <img src="{% static "images/undraw_Security_re_a2rk.png" %}" alt="" class="welcomeMessageImage">
+                <p class="title">Secure and Reliable Banking</p>
+                <p class="desc">Your money is safe with us. Enjoy secure and convenient online banking services.</p>
+            </div>
+            <div class="welcomeMessage">
+                <img src="{% static "images/transferMoney.png" %}" alt="" class="welcomeMessageImage">
+                <p class="title">Transfer & Request Money Instantly</p>
+                <p class="desc">Transfer and request money instantly with our fast and secure online payment system</p>
+            </div>
+            <div class="welcomeMessage">
+                <img src="{% static "images/offers.png" %}" alt="" class="welcomeMessageImage">
+                <p class="title">Offers</p>
+                <p class="desc">Take advantage of our exclusive offers and personalized financial advice to reach your financial goals.</p>
+            </div>
+        </div>
+        <div class="swiperthemp">
+            <p class="ThembNav1 active"></p>
+            <p class="ThembNav2"></p>
+            <p class="ThembNav3"></p>
+        </div>
+        <button class="Continue" onclick="nextMessage()" >Continue</button>
+        </div>
+    </div>
+    <header>
+        <img class="icon" src="{% static 'images/Sewedy_img.png' %}" alt="icon">
+        <img src="{% static 'images/man.png' %}" alt="" class="userImage">
+    </header>
+    <div class="firstSection">
+        <img src="{% static 'images/backGround.jpg' %}" class="background" alt="">
+        <div class="welcomeCon">
+            <h2 style="color:white;">Welcome, [User's Name]!</h2>
+            <p style="color:white;">How can we assist you today?</p>
+        </div>
+        <div class="navigation">
+            <a href="{% url "transfer" %}">Transfer Money</a>
+            <a href="{% url "deposite" %}">Deposit</a>
+            <a href="{% url "withdraw" %}">Withdraw</a>
+        </div>
+    </div>
+    <div class="lastTranfersCon">
+        <h2>Last Transfers</h2>
+        <div class="lastTranfers">
+            <div class="process">
+                <img src="{% static 'images/defTrans.jpg' %}" class="imageTrans" alt="transfer">
+                <div class="contDet">
+                    <p>From:  Eample</p>
+                    <p>Amount:  2500</p>
+                    <p>To:  example</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer><p>&circleddash;CopyRight <abbr title="Elsewedy International high School">Elsewedy</abbr>  2024</p></footer>
+    {% comment %} <div class="last-transfer">
+        <h2>Last Transfer Process</h2>
+        <div class="transaction-details">
+            <p><strong>Amount:</strong> $100</p>
+            <p><strong>Date:</strong> May 25, 2024</p>
+            <p><strong>Type:</strong> Transfer</p>
+        </div>
+    </div> {% endcomment %}
+    <script>
+        let el=0;
+        function nextMessage()
+        {
+            let RemoveActive = document.querySelector(`.ThembNav${el+1}`);
+            RemoveActive.classList.remove('active');
+            el++;
+            if(el === 2)
+            {
+                document.querySelector('.Continue').innerText = 'submit';
+            }
+            if(el == 3)
+            {
+                document.querySelectorAll(".welcome").forEach((el)=>
+                {
+                    el.style.display = "none";
+                });
+            }
+            let containerOfMessages = document.querySelector(".containerOfwelcome");
+            containerOfMessages.style.marginLeft = `${-el*41.5}rem`;
+            let addClass = document.querySelector(`.ThembNav${el+1}`);
+            addClass.classList.add('active');
+            console.log(el);
+        }
+    </script>
+</body>
+</html>

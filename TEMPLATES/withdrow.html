@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<title>Withdrawal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: fit-content;
+    width: 100%;
+    text-align: center;
+  }
+
+  h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .input-field {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+  }
+
+  .input-icon {
+    color: #888;
+    font-size: 20px;
+    margin-right: 10px;
+  }
+
+  .input-field input {
+    width: calc(100% - 30px);
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .input-field input:focus {
+    border-color: #e60000;
+    outline: none;
+  }
+
+  .help-text {
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+    text-align: left;
+  }
+
+  .btn {
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 20px;
+  }
+  #image
+        {
+            width: 20rem;
+            height: 20rem;
+            margin-top: 1rem;
+        }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Withdrawal</h2>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <div class="input-field">
+            <span class="input-icon">💵</span>
+            <input type="number" id="amount" name="amount" placeholder="Enter amount to withdraw" required>
+          </div>
+          <p class="help-text">Enter the amount you want to withdraw.</p>
+        </div>
+        <button type="submit" class="btn">Withdraw</button>
+      </form>
+      <img src="{% static 'images/withdraw.png' %}" id="image" alt="">
+    </div>
+  </div>
+</body>
+</html>

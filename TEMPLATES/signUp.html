@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{% static 'css/signUp.css' %}">
+    <style>
+      body
+      {
+        background-color: #f0f0f0;
+      }
+        .custom-file-input
+        {
+            border:none;
+            margin-top:2rem;
+            overflow: visible;
+            padding:.2rem .5rem;
+        }
+        .custom-file-input::-webkit-file-upload-button {
+            visibility: hidden;
+          }
+          .custom-file-input::before {
+            appearance: none;
+            content: 'Select some files';
+            display: inline-block;
+            background: #e60000;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 8px;
+            outline: 3px solid #fd4c4cb0;
+            white-space: nowrap;
+            -webkit-user-select: none;
+            cursor: pointer;
+            text-shadow:none;
+            font-weight: 700;
+            font-size: 10pt;
+            color:white;
+          }
+          .custom-file-input:hover::before {
+            border-color: black;
+          }
+          .custom-file-input:active::before {
+            background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+          }
+          #image
+          {
+            margin-top:4rem;
+          }
+    </style>
+</head>
+<body oncontextmenu="return false">
+     <div id="continar" style="margin-top:0rem; ">
+        <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm()" style="border-radius:20px;">
+            {% csrf_token %}
+            <p style="font-size:1.2rem;">Welcome</p>
+            <input type="text" name="Name" id="Name-text" placeholder="Enter your Name">
+            <input type="email" name="email" placeholder="Enter your E-mail" id="email-text">
+            <input type="text" name="phone" id="phone-text" placeholder="Enter your Phone Number">
+            <input type="text" name="nationalId" placeholder="Enter your National ID" id="nationalId">
+            <input class="custom-file-input" name="userImage" type="file">
+            <div style="display: flex; gap: 1rem; margin-bottom: 3rem; margin-top: 0rem;">
+                <input type="password" name="password" id="password-text" placeholder="Enter your password">
+                <input type="password"  placeholder="Re-Enter your Password" id="re_password-text"><br>
+            </div>
+            <button type="submit">Submit</button>
+            <a href="#" style="margin-top: -3.5rem;">Already Have an account</a>
+        </form>
+        <img src="{% static 'images/SignUpImage.png' %}" alt="" style="border-radius:10px;" id="image">
+     </div>
+     <p id="check_v" hidden>{{validNationalId}}</p>
+     <script>
+      const emailRegex = /\w+@\w+\.(com|org)/;
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+      let checkv = document.getElementById("check_v");
+      window.onload = function() {
+        if(checkv.textContent == "false")
+        {
+            Swal.fire({
+                title:"Error!",
+                text:"This is not Your National ID",
+                icon: "error",
+            });
+        }
+      }
+      function validateForm() {
+          const name = document.getElementById('Name-text').value;
+          const phone = document.getElementById('phone-text').value;
+          const nationalId = document.getElementById('nationalId').value;
+          const password = document.getElementById('password-text').value;
+          const rePassword = document.getElementById('re_password-text').value;
+          const email = document.getElementById('email-text').value;
+          if (name.length && phone.length && nationalId.length && password.length && rePassword.length && email.length) {
+              if (phone.length === 11) {
+                  if (passwordRegex.test(password)) {
+                      if (emailRegex.test(email)) {
+                          if (nationalId.length === 14) {
+                              if (password === rePassword) {
+                                  return true;
+                              } else {
+                                  Swal.fire({
+                                      title: "Error",
+                                      text: "Passwords do not match",
+                                      icon: "error"
+                                  });
+                              }
+                          } else {
+                              Swal.fire({
+                                  title: "Error",
+                                  text: "Check your national ID (allowed Egyptians only)",
+                                  icon: "error"
+                              });
+                          }
+                      } else {
+                          Swal.fire({
+                              title: "Error",
+                              text: "Check your email (example@domain.com or .org)",
+                              icon: "error"
+                          });
+                      }
+                  } else {
+                      Swal.fire({
+                          title: "Error",
+                          text: "Please make sure your password contains letters, numbers, and special characters",
+                          icon: "error"
+                      });
+                  }
+              } else {
+                  Swal.fire({
+                      title: "Error",
+                      text: "Please make sure your phone contains 11 numbers",
+                      icon: "error"
+                  });
+              }
+          } else {
+              Swal.fire({
+                  title: "Error",
+                  text: "There is an empty field ",
+                  icon: "error"
+              });
+          }
+          return false;
+      }
+  </script>
+</body>
+</html>

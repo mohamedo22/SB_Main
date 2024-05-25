@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<title>Login</title>
+<script src="https://kit.fontawesome.com/a0dcba6903.js" crossorigin="anonymous"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+  }
+
+  .logo {
+    width: 80px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+
+  .input-field {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    width: calc(100% - 30px);
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  .input-field input {
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-left: 10px;
+    font-size: 16px;
+  }
+
+  .input-field:focus-within {
+    border-color: #e60000;
+  }
+
+  .input-icon {
+    color: #888;
+  }
+
+  .show-password {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #888;
+    margin-left: 10px;
+  }
+
+  .btn {
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .btn:hover {
+    background-color: #cc0000;
+  }
+
+  .forgot-password {
+    margin-top: 20px;
+  }
+
+  .forgot-password a {
+    color: #e60000;
+    text-decoration: none;
+    font-size: 14px;
+  }
+
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+  #image
+        {
+            width: 40rem;
+            height: 30rem;
+            margin-top: 1rem;
+        }
+</style>
+</head>
+<body oncontextmenu="return false">
+    <div style="display: flex;">
+        <form class="container">
+          {% csrf_token %}
+            <img src="{% static 'images/man.png' %}" alt="Logo" class="logo">
+            <h2>Login</h2>
+            <div class="input-field">
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text"  onpaste="return false;" oncopy="return false;" id="nationalId" placeholder="National ID" required>
+            </div>
+            <div class="input-field">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password"  onpaste="return false;" oncopy="return false;" id="password" placeholder="Password" required>
+            <button type="button" class="show-password" onclick="togglePassword()">👁️</button>
+            </div>
+            <button class="btn" type="submit">Login</button>
+            <div class="forgot-password">
+              <a href="{% url "signUp" %}">I don't Have an account</a>
+            <p style="font-size:.7rem">if you Forgot your Password , please call technical support</p>
+            </div>
+        </form>
+        <img src="{% static 'images/undraw_Security_re_a2rk.png' %}" alt="" id="image">
+    </div>
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const showPasswordButton = document.querySelector('.show-password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        showPasswordButton.textContent = '🙈';
+      } else {
+        passwordInput.type = 'password';
+        showPasswordButton.textContent = '👁️';
+      }
+    }
+  </script>
+</body>
+</html>

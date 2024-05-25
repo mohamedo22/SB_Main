@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<title>Money Transfer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: max-content;
+    width: 100%;
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .input-field {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    width: calc(100% - 30px);
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  .input-field input {
+    border: none;
+    outline: none;
+    width: 100%;
+    margin-left: 10px;
+    font-size: 16px;
+  }
+
+  .input-field:focus-within {
+    border-color: #e60000;
+  }
+
+  .input-icon {
+    color: #888;
+    font-size: 20px;
+  }
+
+  .btn {
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .btn:hover {
+    background-color: #cc0000;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .help-text {
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+  }
+  #image
+        {
+            width: 20rem;
+            height: 20rem;
+            margin-top: 1rem;
+        }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h2>Money Transfer</h2>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <form  method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="toAccount">To Account</label>
+          <div class="input-field">
+            <span class="input-icon">🏦</span>
+            <input type="text" id="toAccount" name="toAccount" placeholder="Enter recipient's account number" required>
+          </div>
+          <p class="help-text">Make sure this is the correct account Email.</p>
+        </div>
+        <div class="form-group">
+          <label for="amount">Amount</label>
+          <div class="input-field">
+            <span class="input-icon">💵</span>
+            <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
+          </div>
+          <p class="help-text">Make sure the amount is correct.</p>
+        </div>
+        <button type="submit" class="btn">Transfer</button>
+      </form>
+      <img src="{% static 'images/transfar.png' %}" id="image" alt="">
+    </div>
+  </div>
+</body>
+</html>

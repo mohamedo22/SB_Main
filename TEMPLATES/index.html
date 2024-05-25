@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SBank</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper.css' %}">
+</head>
+<!-- https://dribbble.com/shots/4207714-Credit-card-Landing-Page-Design/attachments/961670 -->
+<body oncontextmenu="return false"> 
+    <header>
+        <img src="{% static 'images/Sewedy_img.png' %}" id="logo" alt="">
+        <ul class="nav" style="margin-left: 21rem;">
+          <a  href="#" class="nav-items"><i>Home</i></a>
+          <a  href="#second_section" class="nav-items"><i>Features </i></a>
+          <a href="#ThirdSection" class="nav-items" ><i>Glance</i></a>
+          <a href="#forthSection" class="nav-items" ><i>Reviews</i></a>
+        </ul>
+        <input type="checkbox" id="list-check" hidden />
+        <label for="list-check"  id="btn-list">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path
+              id="svg"
+              d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM64 256c0-17.7 14.3-32 32-32H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H96c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+            />
+          </svg>
+        </label>
+        <ul class="nav log" style="margin-left: 8rem;">
+          <a href="{% url "signUp" %}" class="nav-items" ><i>Register Now</i></a>
+          <p class="nav-items">|</p>
+          <a href="{% url "signIn" %}" class="nav-items" ><i>Sign in</i></a>
+        </ul>
+      </header>
+      <div id="list">
+        <a href="index.html">Home</a>
+        <br />
+        <hr />
+        <br />
+        <a href="#second_section">Features</a>
+        <br />
+        <hr />
+        <br />
+        <a href="#ThirdSection">Glance</a>
+        <br />
+        <hr />
+        <br />
+        <a href="#forthSection">Reviews</a>
+      </div>
+      <div class="first_section">
+        <div class="squire"></div>
+        <div class="squire2"></div>
+        <div class="pipe"></div>
+        <div class="pipe" style="margin-top: 1.5rem; width: 70%;"></div>
+        <div class="pipe" style="margin-top: 3.5rem; width: 65%;"></div>
+        <div class="continer_f">
+            <div class="texts">
+                <p id="title">
+                    New Home for Your Payments.
+                </p>
+                <p>
+                    Turnkey payment solution for online business.
+                </p>
+                <a href="{% url "signUp" %}" style="text-decoration: none;"><button class="button f_button"><span><pre>GET  STARTED</pre></span><p id="arow">➡</p></button></a>
+            </div>
+            <div class="cards_f">
+                <img src="{% static 'images/card1.png' %}" class="cards" alt="">
+                <img src="{% static 'images/card2.png' %}" class="cards" alt="">
+                <img src="{% static 'images/card3.png' %}" class="cards" style="margin-left: 4rem;" alt="">
+            </div>
+        </div>
+      </div>
+      <div class="second_section" id="second_section">
+        <p class="titleSection2">Meet Our Cool Features</p>
+        <div class="FeaturesContainer">
+            <div class="FeaturesDivs">
+                <img src="{% static 'images/phoneIcon.png' %}" class="FeaturesImage" alt="">
+                <p class="FeaturesTitle">Always With You</p>
+                <p class="FeaturesDescription">
+                    Our customer service team is available 24/7, anywhere, to assist with your inquiries and concerns, providing prompt and efficient support.
+                </p>
+            </div>
+            <div class="FeaturesDivs">
+                <img src="{% static 'images/cardS.png' %}" class="FeaturesImage" alt="">
+                <p class="FeaturesTitle">Save & Secure</p>
+                <p class="FeaturesDescription">
+                    Rest assured, we diligently safeguard your financial transactions and sensitive information with the highest security measures.
+                </p>
+            </div>
+            <div class="FeaturesDivs">
+                <img src="{% static 'images/Lasticon.png' %}" class="FeaturesImage" alt="">
+                <p class="FeaturesTitle">Card Delivery</p>
+                <p class="FeaturesDescription">
+                    our card delivery service ensures that your new cards are securely and promptly delivered to your designated address
+                </p>
+            </div>
+        </div>
+      </div>
+      <div class="ThirdSection" id="ThirdSection">
+        <p class="titleSection2">Glance</p>
+        <div class="ContainerOfprefs">
+            <img src="{% static 'images/FirstPerv.png' %}" class="ImagePref" alt="">
+            <div class="TextsPref">
+                <p class="TitlePref">Join Over 20 Million Other And Open a Wallet.</p>
+                <p class="PrefDescription">
+                        Funding freemium technology focus equity bootstrapping usernce niche market. Seed round agile development growth hacking retur on investment alpha. Investor advisor marketing pitch gen scrum project burn rate responsive web design.
+                        Agile development innovator termsheet graphical users interface pitch scrum project research & development. Non-disclosure agreement supply chain growth hacking churn.
+                </p>
+            </div>
+        </div>
+        <div class="ContainerOfprefs">
+            <div class="TextsPref">
+                <p class="TitlePref">Find a Better Card Deal In Few Easy Steps.</p>
+                <p class="PrefDescription">
+                    Funding freemium technology focus equity bootstrapping usernce niche market. Seed round agile development growth hacking retur on investment alpha. Investor advisor marketing pitch gen scrum project burn rate responsive web design.
+                    Agile development innovator termsheet graphical users interface pitch scrum project research & development. Non-disclosure agreement supply chain growth hacking churn.
+                </p>
+            </div> 
+            <img src="{% static 'images/SecondPrev.png' %}" class="ImagePref" alt="">
+        </div>
+      </div>
+      <div class="forthSection" id="forthSection">
+        <p class="titleSection2">Trusted By Many User</p>
+        <div class="section5">
+            <div class="swiper mySwiper swiper-initialized swiper-horizontal swiper-backface-hidden">
+                <div class="swiper-wrapper wrapper5" style="cursor: grab; transition-duration: 0ms; transform: translate3d(-756px, 0px, 0px); transition-delay: 0ms;" id="swiper-wrapper-108567aacc626a8cd" aria-live="polite">
+                  <div class="swiper-slide" style="width: 378px;" role="group" aria-label="1 / 9    ">
+                    <div class="SwapSection5">
+                        <div class="descSection5">
+                            <p>This bank system is incredibly user-friendly, making banking so much easier for everyone</p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="swiper-slide swiper-slide-prev" style="width: 378px;" role="group" aria-label="2 / 9">
+                    <div class="SwapSection5">
+                        <div class="descSection5">
+                            <p>The efficiency of this bank system is truly impressive, saving us time and effort every day.</p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="swiper-slide swiper-slide-active" style="width: 378px;" role="group" aria-label="3 / 9">
+                    <div class="SwapSection5">
+                        <div class="descSection5">
+                            <p>With this bank system, managing finances has never been so straightforward and hassle-free.</p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="swiper-slide swiper-slide-next" style="width: 378px;" role="group" aria-label="4 / 9">
+                    <div class="SwapSection5">
+                        <div class="descSection5">
+                            <p>The advanced security features of this bank system give us peace of mind and confidence.</p>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="swiper-slide" style="width: 378px;" role="group" aria-label="5 / 9">
+                    <div class="SwapSection5">
+                        <div class="descSection5">
+                            <p>Customer support is always just a click away with this bank system, ensuring a seamless experience.</p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="swiper-button-next" onclick="NextElement(5)" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-108567aacc626a8cd" aria-disabled="false"></div>
+                <div class="swiper-button-prev" onclick="LastElement(5)" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-108567aacc626a8cd" aria-disabled="false"></div>
+                <div class="swiperthemp">
+                    <p class="thempn5 ThembNav15"></p>
+                    <p class="thempn5 ThembNav25"></p>
+                    <p class="thempn5 ThembNav35"></p>
+                    <p class="thempn5 ThembNav45"></p>
+                </div>
+                <div class="swiperthemp usersImageContainer">
+                    <img src="{% static 'images/user1.png' %}" alt="" class="usersImage activeUser" id="user1">
+                    <img src="{% static 'images/user2.png' %}" alt="" class="usersImage" id="user2">
+                    <img src="{% static 'images/user3.png' %}" alt="" class="usersImage" id="user3">
+                    <img src="{% static 'images/user4.png' %}" alt="" class="usersImage" id="user4">
+                    <img src="{% static 'images/user5.png' %}" alt="" class="usersImage" id="user5">
+                </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            </div>
+        </div>
+      </div>
+      <footer><p>&circleddash;CopyRight <abbr title="Elsewedy International high School">Elsewedy</abbr>  2024</p></footer>
+      <script src="{% static 'script/index_functions.js' %}"></script>
+</body>
+</html>

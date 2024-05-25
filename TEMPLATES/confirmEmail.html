@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<title>Confirm Email</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  h2 {
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .btn {
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    outline: 3px solid #fd4c4cb0;
+    margin-top:2rem;
+  }
+  input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 20px);
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition : all 100ms;
+  }
+  input[type="text"]:focus
+  {
+  	outline: 3px solid #fd4c4cb0;
+  }
+</style>
+</head>
+<body oncontextmenu="return false">
+  <form method="POST" class="container">
+    {% csrf_token %}
+    <h2>Confirm Your Email Address</h2>
+    <p>We've sent an email to <strong>{{userEmail}}</strong> with a confirmation code. Please enter the code below:</p>
+    <input type="text" name="codeuser" id="confirmationCode" placeholder="Enter code">
+    <button class="btn" type="submit">Submit Code</button>
+  </form>
+  <p id="check_v" hidden>{{check}}</p>
+  <script>
+        let checkv = document.getElementById("check_v");
+        if(checkv.textContent == "false")
+        {
+            Swal.fire({
+                title:"Error!",
+                text:"wrong code",
+                icon: "error",
+            });
+        }
+        let email = document.getElementById("confirmationCode");
+        document.forms[0].onsubmit = function (ev) {
+            if (email.value == "") {
+                Swal.fire({
+                    title: "Error!",
+                    text: "There is an Empty field",
+                    icon: "error",
+                });
+                ev.preventDefault();
+            }
+        };
+    </script>
+</body>
+</html>
