@@ -46,7 +46,7 @@ def signUp(request):
           request.session['phone'] = phone
           request.session['password'] = password
           request.session['nationalId'] = nationalI
-          fs = FileSystemStorage()
+          fs = FileSystemStorage(location=settings.MEDIA_ROOT)
           filename = fs.save(image.name, image)
           uploaded_file_url = fs.url(filename)
           request.session['image_url'] = uploaded_file_url
@@ -87,4 +87,6 @@ def transfer(request):
 def deposite(request):
     return render(request , 'deposite.html')
 def home(request):
-    return render(request , 'Home.html')
+    nationalId = request.session.get('nationalId')
+    user = User.objects.get(national_id = nationalId)
+    return render(request , 'Home.html' , {'user' : user})

@@ -342,12 +342,12 @@
     </div>
     <header>
         <img class="icon" src="{% static 'images/Sewedy_img.png' %}" alt="icon">
-        <img src="{% static 'images/man.png' %}" alt="" class="userImage">
+        <img src="{{user.image.url}}" alt="" class="userImage">
     </header>
     <div class="firstSection">
         <img src="{% static 'images/backGround.jpg' %}" class="background" alt="">
         <div class="welcomeCon">
-            <h2 style="color:white;">Welcome, [User's Name]!</h2>
+            <h2 style="color:white;">Welcome, [{{user.name}}]!</h2>
             <p style="color:white;">How can we assist you today?</p>
         </div>
         <div class="navigation">
