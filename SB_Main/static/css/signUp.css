@@ -1,139 +1,166 @@
 :root
-        {
-            --maincolor : #e60000;
-        }
-        body
-        {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: rgb(242,255,242);
-           overflow: hidden;
-            width: 100%;
-            height: 100%;
-        }
-        *
-        {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
-        #continar
-        {
-            display: flex;
-            margin-top: 4%;
-        }
-        #image
-        {
-            width: 40rem;
-            height: 30rem;
-            margin-top: 1rem;
-        }
-        ::-webkit-scrollbar
-        {
-            display: none;
-        }
-        @media screen and (max-width: 767px) {
-            #image
-            {
-                display: none;
-            }
-            #continar
-            {
-                margin-top: 30%;
-                margin-left: -15%;
-                overflow: hidden;
-                width: 300px;
-                height: fit-content;
-            }
-            #planet-s
-            {
-                display: none;
-            }
-        }
-        form
-        {
-            width: fit-content;
-            padding: 2rem;
-            height: min-content;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: white;
-        }
-        #logo_form
-        {
-            width: 4rem;
-            border-radius: 100%;
-            margin-left: -125%;
-            margin-top: -10%;
-        }
-        #student_logo
-        {
-            width: 2rem;
-            border-radius: 100%;
-            margin-left: 0%;
-        }
-        form p
-        {
-            margin-bottom: 2rem;
-        }
-        form input
-        {
-            width: 15rem ;
-            height: 3rem;
-            border: 1px solid var(--maincolor);
-            border-left: 0;
-            border-right: 0;
-            border-top: 0;
-            outline: none;
-            background-color: transparent;
-        }
-        form button
-        {
-            padding: .5rem 1rem;
-            border-radius: 8px;
-            color: black;
-            margin-bottom: 5rem;
-            outline: none;
-            border: 1px solid var(--maincolor);
-            cursor: pointer;
-            background-color: white;
-            transition: 800ms all;
-        }
-        form button:hover
-        {
-            background-color: var(--maincolor);
-            box-shadow: 0px 0px 10px 4px var(--maincolor);
-            color: white;
-        }
-        form *
-        {
-            position: relative;
-            z-index: 2;
-        }
-        #svg-st
-        {
-            width: 10rem;
-            position: absolute;
-            z-index: 1;
-            margin-top: 4vw;
-            opacity: 0.5;
-        }
-        #planet-s
-        {
-            position: absolute;
-            margin-top: 30%;
-            rotate: -5deg;
-            left: 15vw;
-            width: 10rem;
-        }
-        form a
-        {
-            text-decoration: none;
-            color: var(--maincolor);
-            transition: all 400ms;
-        }
-        form a:hover
-        {
-            color: rgb(80, 12, 15);
-        }
+{
+    --maincolor : #e60000;
+}
+body
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(242,255,242);
+   overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+*
+{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+#continar
+{
+    display: flex;
+    margin-top: 4%;
+}
+#image
+{
+    width: 40rem;
+    height: 30rem;
+    margin-top: 1rem;
+}
+::-webkit-scrollbar
+{
+    display: none;
+    
+}
+@media screen and (max-width: 767px) {
+    #image
+    {
+        display: none;
+    }
+    #continar
+    {
+        margin-top: 30%;
+        margin-left: -15%;
+        overflow: hidden;
+        width: 300px;
+        height: fit-content;
+    }
+    #planet-s
+    {
+        display: none;
+    }
+}
+form
+{
+    width: fit-content;
+    padding: 2rem;
+    height: min-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+#logo_form
+{
+    width: 4rem;
+    border-radius: 100%;
+    margin-left: -125%;
+    margin-top: -10%;
+}
+#student_logo
+{
+    width: 2rem;
+    border-radius: 100%;
+    margin-left: 0%;
+}
+form p
+{
+    margin-bottom: 2rem;
+}
+form input:not(.custom-file-input)
+{
+    width: 15rem ;
+    height: 3rem;
+    border: 1px solid var(--maincolor);
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+    outline: none;
+    background-color: transparent;
+}
+form button
+{
+    padding: .5rem 1rem;
+    border-radius: 8px;
+    color: black;
+    margin-bottom: 5rem;
+    outline: none;
+    border: 1px solid var(--maincolor);
+    cursor: pointer;
+    background-color: white;
+    transition: 800ms all;
+}
+form button:hover
+{
+    background-color: var(--maincolor);
+    box-shadow: 0px 0px 10px 4px var(--maincolor);
+    color: white;
+}
+form *
+{
+    position: relative;
+    z-index: 2;
+}
+#svg-st
+{
+    width: 10rem;
+    position: absolute;
+    z-index: 1;
+    margin-top: 4vw;
+    opacity: 0.5;
+}
+#planet-s
+{
+    position: absolute;
+    margin-top: 30%;
+    rotate: -5deg;
+    left: 15vw;
+    width: 10rem;
+}
+form a
+{
+    text-decoration: none;
+    color: var(--maincolor);
+    transition: all 400ms;
+}
+form a:hover
+{
+    color: rgb(80, 12, 15);
+}
+.custom-file-input::-webkit-file-upload-button {
+    visibility: hidden;
+        
+  }
+  .custom-file-input::before {
+    appearance: none;
+    content: 'Select Your image';
+    display: inline-block;
+    background: #e60000;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: 2px solid #fd4c4cb0;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow:none;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+  .custom-file-input:hover::before {
+    border-color: black;
+  }
+  .custom-file-input:active::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }

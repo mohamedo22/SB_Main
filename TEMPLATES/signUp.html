@@ -25,7 +25,7 @@
           }
           .custom-file-input::before {
             appearance: none;
-            content: 'Select some files';
+            content: 'Select your Image';
             display: inline-block;
             background: #e60000;
             border: none;
@@ -48,7 +48,12 @@
           }
           #image
           {
-            margin-top:4rem;
+            margin-top:0rem;
+            height: 98%;
+          }
+          #continar
+          {
+            height: 100vh
           }
     </style>
 </head>
@@ -67,9 +72,9 @@
                 <input type="password"  placeholder="Re-Enter your Password" id="re_password-text"><br>
             </div>
             <button type="submit">Submit</button>
-            <a href="#" style="margin-top: -3.5rem;">Already Have an account</a>
+            <a href="{% url "signIn" %}" style="margin-top: -3.5rem;">Already Have an account</a>
         </form>
-        <img src="{% static 'images/SignUpImage.png' %}" alt="" style="border-radius:10px;" id="image">
+        <img src="{% static 'images/LogImage.jpeg' %}" alt="" style="border-radius:10px;" id="image">
      </div>
      <p id="check_v" hidden>{{validNationalId}}</p>
      <p id="hastooken" hidden>{{hastooken}}</p>

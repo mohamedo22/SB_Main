@@ -120,7 +120,7 @@
 }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false">
   <a href="{% url "home" %}" class="back"><i class="fa-solid fa-chevron-left"></i> Back</a>
   <div class="container">
     <h2>Money Transfer</h2>
@@ -156,7 +156,7 @@
       let message = document.getElementById("message");
       window.onload = function() {
             Swal.fire({
-                title:"Error!",
+                
                 text: `${message.innerText}`,
                 icon: "info",
             });

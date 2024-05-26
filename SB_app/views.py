@@ -36,6 +36,7 @@ def custom_page_not_found_view(request, exception):
 def index(request):
     return render(request , 'index.html')
 @csrf_protect
+
 def signUp(request):
     if request.method=='POST':
         nationalI = request.POST.get('nationalId')
@@ -71,6 +72,7 @@ def signUp(request):
              return render(request , 'signUp.html' , {'hastooken':"false"})
     return render(request , 'signUp.html')
 @csrf_protect
+@login_required(login_url='signUp')
 def confirmEmail(request):
     email = request.session.get('email')
     if request.method=="POST":
@@ -112,6 +114,7 @@ def signIn(request):
                 return render(request, 'signIn.html' , {'check':'false'})
     return render(request, 'signIn.html' , {'check':'true'})
 @csrf_protect
+@login_required(login_url='signUp')
 def withdraw(request):
     national_id = request.session.get('nationalId')
     user = User.objects.filter(national_id = national_id).first()
@@ -125,7 +128,7 @@ def withdraw(request):
             return render(request , 'withdrow.html' , {"process" : "fail" , 'user':user})
     return render(request , 'withdrow.html' , {'user':user})
 @csrf_protect
-
+@login_required(login_url='signUp')
 def transfer(request):
     national_id = request.session.get('nationalId')
     user = get_object_or_404(User, national_id=national_id)
@@ -196,6 +199,7 @@ def transfer(request):
     
     return render(request, 'transfer.html' , {'user':user})
 @csrf_protect
+@login_required(login_url='signUp')
 def deposite(request):
     national_id = request.session.get('nationalId')
     user = get_object_or_404(User, national_id=national_id)
@@ -246,11 +250,13 @@ def deposite(request):
             icon = "error"
         return render(request, 'deposite.html', {'message': message , "icon" : icon , "user":user })
     return render(request, 'deposite.html' , {"user":user })
+@login_required(login_url='signUp')
 def home(request):
     nationalId = request.session.get('nationalId')
     user = User.objects.get(national_id = nationalId)
     transfers = Transfers.objects.filter(Q(from_user=user) | Q(to_user=user))
     return render(request , 'Home.html' , {'user' : user  , 'transfers':transfers})
+@login_required(login_url='signUp')
 def profile(request):
     nationalId = request.session.get('nationalId')
     user = User.objects.get(national_id=nationalId)
