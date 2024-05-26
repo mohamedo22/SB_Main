@@ -11,6 +11,7 @@ class User(models.Model):
     date_of_creation = models.DateField(auto_now_add=True)
     image = models.ImageField(upload_to="usersImage/")
     governorate = models.CharField(max_length=100)
+    coin = models.CharField(max_length=50 , default='Egypt')
     def __str__(self):
         return self.name
 

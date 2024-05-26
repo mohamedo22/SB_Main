@@ -72,16 +72,26 @@
         <img src="{% static 'images/SignUpImage.png' %}" alt="" style="border-radius:10px;" id="image">
      </div>
      <p id="check_v" hidden>{{validNationalId}}</p>
+     <p id="hastooken" hidden>{{hastooken}}</p>
      <script>
       const emailRegex = /\w+@\w+\.(com|org)/;
       const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])/;
       let checkv = document.getElementById("check_v");
+      let hastooken = document.getElementById("hastooken");
       window.onload = function() {
         if(checkv.textContent == "false")
         {
             Swal.fire({
                 title:"Error!",
                 text:"This is not Your National ID",
+                icon: "error",
+            });
+        }
+        if(hastooken.textContent == "false")
+        {
+            Swal.fire({
+                title:"Error!",
+                text:"This ID is already use",
                 icon: "error",
             });
         }

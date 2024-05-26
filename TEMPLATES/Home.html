@@ -342,7 +342,7 @@
     </div>
     <header>
         <img class="icon" src="{% static 'images/Sewedy_img.png' %}" alt="icon">
-        <img src="{{user.image.url}}" alt="" class="userImage">
+        <a href="{% url "profile" %}"><img src="{{user.image.url}}" alt="" class="userImage"></a>
     </header>
     <div class="firstSection">
         <img src="{% static 'images/backGround.jpg' %}" class="background" alt="">

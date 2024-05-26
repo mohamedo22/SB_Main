@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<title>Profile</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    background-color: #fff;
+    padding: 20px 3rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .user-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .user-header img {
+    width: 80px;
+    height: 85px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+
+  .user-header h1 {
+    font-size: 24px;
+    color: #333;
+  }
+
+  .user-form {
+    display: grid;
+    grid-template-columns: .5fr .5fr;
+    gap: 1rem;
+  }
+
+  .user-form label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .user-form input,
+  .user-form select {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    
+  }
+  .user-form input:focus
+  {
+    outline:2px solid #e60000;
+  }
+  .user-form input[readonly] {
+    background-color: #e9e9e9;
+    cursor: not-allowed;
+    outline:none;
+    border:none;
+    user-select: none;
+  }
+
+  .user-form .password-container {
+    position: relative;
+  }
+
+  .user-form .password-container input {
+    padding-right: 40px;
+  }
+
+  .user-form .password-container button {
+    position: absolute;
+    right: 10px;
+    top: 55%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: #e60000;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    grid-column: span 2;
+    background-color: #e60000;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+
+  .submit-btn:hover {
+    background-color: #cc0000;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="user-header">
+      <img src="{{user.image.url}}" alt="User Image">
+      <h1>Profile Page</h1>
+    </div>
+    <form  method="POST" enctype="multipart/form-data" class="user-form">
+      {% csrf_token %} 
+      <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{user.email}}">
+      </div>
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" value="{{user.name}}">
+      </div>
+      <div>
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone" value="{{user.phone}}">
+      </div>
+      <div>
+        <label for="national_id">National ID</label>
+        <input type="text" id="national_id" name="national_id" value="{{user.national_id}}" readonly>
+      </div>
+      <div class="password-container">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" value="{{user.password}}">
+        <button type="button" onclick="togglePassword()">Show</button>
+      </div>
+      <div>
+        <label for="balance">Balance</label>
+        <input type="text" id="balance" name="balance" value="{{user.balance}}" readonly>
+      </div>
+      <div>
+        <label for="date_of_creation">Date of Creation</label>
+        <input type="date" id="date_of_creation" name="date_of_creation" value="{{user.date_of_creation}}" readonly>
+      </div>
+      <div>
+        <label for="governorate">Governorate</label>
+        <input type="text" id="governorate" name="governorate" value="{{user.governorate}}" readonly>
+      </div>
+      <div>
+        <label for="coin">Coin</label>
+        <select id="coin" name="coin">
+          <option value="dollar" {% if user.coin == "dollar" %}selected{% endif %}>Dollar</option>
+          <option value="egypt" {% if user.coin == "egypt" %}selected{% endif %}>Egypt Pound</option>
+          <option value="riyal" {% if user.coin == "riyal" %}selected{% endif %}>Riyal Saudi</option>
+          <option value="dirham" {% if user.coin == "dirham" %}selected{% endif %}>Dirham</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-btn">Save Changes</button>
+    </form>
+  </div>
+  <script>
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const showButton = passwordField.nextElementSibling;
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        showButton.textContent = 'Hide';
+      } else {
+        passwordField.type = 'password';
+        showButton.textContent = 'Show';
+      }
+    }
+  </script>
+</body>
+</html>
