@@ -1,5 +1,6 @@
 from django.db import models
 from lib.national_id import NationalID
+from datetime import *
 # Create your models here.
 class User(models.Model):
     email = models.EmailField(max_length=254)
@@ -8,7 +9,7 @@ class User(models.Model):
     national_id = models.CharField(unique=True, primary_key=True , max_length=20)
     password = models.CharField(max_length=50)
     balance = models.FloatField()
-    date_of_creation = models.DateField(auto_now_add=True)
+    date_of_creation = models.CharField(max_length=100, null=True, blank=True, default=datetime.now().strftime("%Y-%m-%d"))
     image = models.ImageField(upload_to="usersImage/")
     governorate = models.CharField(max_length=100)
     coin = models.CharField(max_length=50 , default='Egypt')

@@ -5,6 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://kit.fontawesome.com/a0dcba6903.js" crossorigin="anonymous"></script>
 <title>Withdrawal</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
@@ -99,11 +101,22 @@
             height: 20rem;
             margin-top: 1rem;
         }
+        .back
+{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+}
 </style>
 </head>
 <body>
+  <a href="{% url "home" %}" class="back"><i class="fa-solid fa-chevron-left"></i> Back</a>
   <div class="container">
     <h2>Withdrawal</h2>
+    <h2 style="font-size:1rem;">Welcome Mr/{{user.name}}</h2>
     <div style="display:flex; align-items:center; gap:1rem;">
       <form method="POST">
         {% csrf_token %}
@@ -120,5 +133,23 @@
       <img src="{% static 'images/withdraw.png' %}" id="image" alt="">
     </div>
   </div>
+  <p id="state" hidden>{{process}}</p>
+  <script>
+    let process = document.getElementById("state").innerText;
+    if(process == "pass")
+    {
+        Swal.fire({
+          title:"Success Process!",
+          icon: "success",
+      });
+    }
+    else if(process == "fail")
+    {
+        Swal.fire({
+          title:"Fail Process!",
+          icon: "error",
+      });
+    }
+  </script>
 </body>
 </html>

@@ -14,5 +14,5 @@ urlpatterns = [
     path('home/transfer/' , transfer , name='transfer' ),
     path('home/deposite/' , deposite , name='deposite' ),
     path('home/' , home , name='home' ),
-    path('home/profile' , profile , name='profile' ),
+    path('home/profile/' , profile , name='profile' ),
 ]

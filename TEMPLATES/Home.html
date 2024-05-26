@@ -159,10 +159,6 @@
         transform: translateY(-20%);
         box-shadow: 0px 0px 30px 30px blue;
     }
-    .welcome
-    {
-    display:none !important ;
-    }
     .header {
         background-color: white;
         color: white;
@@ -175,6 +171,7 @@
         width: 5rem;
         height: 4rem;
         border-radius:50%;
+        object-fit:cover;
     }
     .userImagelink
     {
@@ -258,23 +255,31 @@
         justify-content: center;
         align-items: center;
         background-color: white;
-        border-radius:10px;
         outline: 3px solid rgba(255, 255, 255, 0.788);
+        border-bottom:3px solid  silver;
+        padding-bottom:2rem;
     }
     .lastTranfers
     {
         display: flex;
         flex-direction: column;
-        width: 50vw;
-        height: 30vh;
+        width: 70vw;
+        height: 70vh;
         overflow-y: scroll;
         overflow-x: hidden;
         padding: .5rem 1rem;
         align-items: center;
-        justify-content: center;
         margin:auto;
         gap:2rem;
-        
+        border:1px solid silver;
+        padding-top:2rem;
+        position:relative;
+    }
+    #empty
+    {
+        margin-top:20%;
+        color: gray;
+        font-size: 1.3rem;
     }
     .lastTranfersCon
     {
@@ -308,6 +313,10 @@
       footer p {
         color: rgb(255, 251, 251);
       }
+      .body
+      {
+        display: none;
+      }
 </style>
 <body>
     <div class="backgroundBlur welcome"></div>
@@ -340,6 +349,7 @@
         <button class="Continue" onclick="nextMessage()" >Continue</button>
         </div>
     </div>
+    <div class="body">
     <header>
         <img class="icon" src="{% static 'images/Sewedy_img.png' %}" alt="icon">
         <a href="{% url "profile" %}"><img src="{{user.image.url}}" alt="" class="userImage"></a>
@@ -359,14 +369,18 @@
     <div class="lastTranfersCon">
         <h2>Last Transfers</h2>
         <div class="lastTranfers">
-            <div class="process">
-                <img src="{% static 'images/defTrans.jpg' %}" class="imageTrans" alt="transfer">
-                <div class="contDet">
-                    <p>From:  Eample</p>
-                    <p>Amount:  2500</p>
-                    <p>To:  example</p>
+            {% for process in  transfers%}
+                <div class="process">
+                    <img src="{% static 'images/defTrans.jpg' %}" class="imageTrans" alt="transfer">
+                    <div class="contDet">
+                        <p>From:  {{process.from_user.name}}</p>
+                        <p>Amount:  {{process.balance}}</p>
+                        <p>To:  {{process.to_user.name}}</p>
+                    </div>
                 </div>
-            </div>
+                {% empty %}
+                    <p id="empty">No transfers yet.</p>
+            {% endfor %}
         </div>
     </div>
     <footer><p>&circleddash;CopyRight <abbr title="Elsewedy International high School">Elsewedy</abbr>  2024</p></footer>
@@ -378,6 +392,7 @@
             <p><strong>Type:</strong> Transfer</p>
         </div>
     </div> {% endcomment %}
+</div>
     <script>
         let el=0;
         function nextMessage()
@@ -395,6 +410,7 @@
                 {
                     el.style.display = "none";
                 });
+                document.querySelector(".body").style.display = "block";
             }
             let containerOfMessages = document.querySelector(".containerOfwelcome");
             containerOfMessages.style.marginLeft = `${-el*41.5}rem`;

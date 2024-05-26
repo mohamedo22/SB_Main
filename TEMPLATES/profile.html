@@ -40,6 +40,7 @@
     height: 85px;
     border-radius: 50%;
     margin-right: 20px;
+    object-fit:cover;
   }
 
   .user-header h1 {
@@ -67,10 +68,8 @@
     border-radius: 5px;
     font-size: 14px;
     margin-bottom: 10px;
-    
   }
-  .user-form input:focus
-  {
+  .user-form input:focus {
     outline:2px solid #e60000;
   }
   .user-form input[readonly] {
@@ -125,7 +124,7 @@
       <img src="{{user.image.url}}" alt="User Image">
       <h1>Profile Page</h1>
     </div>
-    <form  method="POST" enctype="multipart/form-data" class="user-form">
+    <form onsubmit="return checkEmpty()" id="profileForm" method="POST" enctype="multipart/form-data" class="user-form" onsubmit="return validateForm()">
       {% csrf_token %} 
       <div>
         <label for="email">Email</label>
@@ -154,7 +153,7 @@
       </div>
       <div>
         <label for="date_of_creation">Date of Creation</label>
-        <input type="date" id="date_of_creation" name="date_of_creation" value="{{user.date_of_creation}}" readonly>
+        <input type="date" id="date_of_creation" name="date_of_creation" value="{{ user.date_of_creation}}" readonly>
       </div>
       <div>
         <label for="governorate">Governorate</label>
@@ -163,15 +162,16 @@
       <div>
         <label for="coin">Coin</label>
         <select id="coin" name="coin">
-          <option value="dollar" {% if user.coin == "dollar" %}selected{% endif %}>Dollar</option>
-          <option value="egypt" {% if user.coin == "egypt" %}selected{% endif %}>Egypt Pound</option>
-          <option value="riyal" {% if user.coin == "riyal" %}selected{% endif %}>Riyal Saudi</option>
-          <option value="dirham" {% if user.coin == "dirham" %}selected{% endif %}>Dirham</option>
+          <option value="Dollar" {% if user.coin == "Dollar" %}selected{% endif %}>Dollar</option>
+          <option value="Egypt" {% if user.coin == "Egypt" %}selected{% endif %}>Egypt Pound</option>
+          <option value="Riyal Soudi" {% if user.coin == "Riyal Soudi" %}selected{% endif %}>Riyal Saudi</option>
+          <option value="Dirham" {% if user.coin == "Dirham" %}selected{% endif %}>Dirham</option>
         </select>
       </div>
       <button type="submit" class="submit-btn">Save Changes</button>
     </form>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function togglePassword() {
       const passwordField = document.getElementById('password');
@@ -183,6 +183,59 @@
         passwordField.type = 'password';
         showButton.textContent = 'Show';
       }
+    }
+    function checkEmpty()
+    {
+      let allfeilds = document.querySelectorAll('input').forEach((el)=>
+      {
+          if(el.value == null)
+            {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'There is an Empty Field',
+              });
+              return false;
+            }
+            return true;
+      });
+    }
+    function validateForm() {
+      let valid = true;
+      const emailField = document.getElementById('email');
+      const phoneField = document.getElementById('phone');
+      const passwordField = document.getElementById('password');
+      
+      const emailRegex = /\w+@\w+\.(com|org)/;
+      const phoneRegex = /^\d{11}$/;
+      const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])/;
+
+      if (!emailRegex.test(emailField.value)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid Email',
+          text: 'Please enter a valid email address.',
+        });
+        valid = false;
+      }
+      if (!phoneRegex.test(phoneField.value)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid Phone Number',
+          text: 'Phone number must be exactly 11 digits.',
+        });
+        valid = false;
+      }
+      if (!passwordRegex.test(passwordField.value)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Weak Password',
+          text: 'Password must contain letters, numbers, and special characters.',
+        });
+        valid = false;
+      }
+      
+      return valid;
     }
   </script>
 </body>

@@ -17,6 +17,10 @@ from django.core.files.storage import default_storage
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 import base64
+from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
+from django.shortcuts import get_object_or_404
+from django.db.models import Q
 config = {
     "apiKey": "AIzaSyDgqQ6j8ETLMvy_cjLsh-crdJ7tN8_ldUo",
     "authDomain": "sbank-30589.firebaseapp.com",
@@ -35,7 +39,7 @@ def index(request):
 def signUp(request):
     if request.method=='POST':
         nationalI = request.POST.get('nationalId')
-        checkForN = User.objects.get(national_id = nationalI)
+        checkForN = User.objects.filter(national_id = nationalI).first()
         if checkForN is None:  
             nationalID = NationalID(request.POST.get('nationalId'))
             if nationalID._validate():
@@ -44,6 +48,7 @@ def signUp(request):
                 phone = request.POST.get('phone')
                 image = request.FILES.get('userImage')
                 password = request.POST.get('password')
+                
                 # send email
                 code = random.randint(5000,10000)
                 request.session['governorate'] = nationalID.governorate
@@ -78,6 +83,7 @@ def confirmEmail(request):
         codeUser = request.POST.get('codeuser')
         encoded_image = request.session.get('image')
         image_name = request.session.get('image_name')
+        date_of_creation = datetime.now().strftime("%Y-%m-%d")
         if encoded_image and image_name:
                 image_data = base64.b64decode(encoded_image)
                 image_file = ContentFile(image_data, name=image_name)
@@ -85,7 +91,7 @@ def confirmEmail(request):
         else:
                 image_path = None
         if int(code) == int(codeUser):
-            newUser = User(name = name , email = email , phone = phone , national_id = nationalI , password = password , balance = 0.00 , image=image_path , governorate = governorate)
+            newUser = User(name = name , email = email , phone = phone , national_id = nationalI , password = password , balance = 0.00 , image=image_path , governorate = governorate , date_of_creation=date_of_creation)
             newUser.save()
             return redirect(home)
         else:
@@ -107,18 +113,194 @@ def signIn(request):
     return render(request, 'signIn.html' , {'check':'true'})
 @csrf_protect
 def withdraw(request):
-    return render(request , 'withdrow.html')
+    national_id = request.session.get('nationalId')
+    user = User.objects.filter(national_id = national_id).first()
+    if request.method == "POST":
+        amount = request.POST.get('amount')
+        if user.balance >=float(amount):
+            user.balance -= float(amount)
+            user.save()
+            return render(request , 'withdrow.html' , {"process" : "pass" , 'user':user})
+        else:
+            return render(request , 'withdrow.html' , {"process" : "fail" , 'user':user})
+    return render(request , 'withdrow.html' , {'user':user})
 @csrf_protect
+
 def transfer(request):
-    return render(request , 'transfer.html')
+    national_id = request.session.get('nationalId')
+    user = get_object_or_404(User, national_id=national_id)
+    if request.method == "POST":
+        user2_email = request.POST.get('toAccount')
+        amount = request.POST.get('amount')
+        
+        if user2_email and amount:
+            try:
+                user2 = User.objects.filter( email = user2_email ).first()
+                
+                if user.balance >= float(amount):
+                    if user.coin == user2.coin:
+                        user2.balance += float(amount)
+                    elif user2.coin == "Egypt":
+                        if user.coin == "Dollar":
+                            user2.balance += float(amount) * 47.89
+                        elif user.coin == "Riyal Soudi":
+                            user2.balance += float(amount) * 12.77
+                        elif user.coin == "Dirham":
+                            user2.balance += float(amount) * 13.04
+                    elif user2.coin == "Dollar":
+                        if user.coin == "Egypt":
+                            user2.balance += float(amount) / 47.89
+                        elif user.coin == "Riyal Soudi":
+                            user2.balance += float(amount) / 3.7506
+                        elif user.coin == "Dirham":
+                            user2.balance += float(amount) / 3.6729
+                    elif user2.coin == "Dirham":
+                        if user.coin == "Egypt":
+                            user2.balance += float(amount) / 13.04
+                        elif user.coin == "Riyal Soudi":
+                            user2.balance += float(amount) / 1.0212
+                        elif user.coin == "Dollar":
+                            user2.balance += float(amount) * 3.6729
+                    elif user2.coin == "Riyal Soudi":
+                        if user.coin == "Dollar":
+                            user2.balance += float(amount) * 3.7506
+                        elif user.coin == "Egypt":
+                            user2.balance += float(amount) / 12.77
+                        elif user.coin == "Dirham":
+                            user2.balance += float(amount) * 1.0212
+                    
+                    user.balance -= float(amount)
+                    new_process = Transfers.objects.create(
+                        balance=float(amount),
+                        date_of_process = datetime.now().strftime("%Y-%m-%d"),
+                        from_user=user,
+                        to_user=user2
+                    )
+                    user.save()
+                    user2.save()
+                    new_process.save()
+                    message = "Success Process Your balance is {} {}".format(user.balance, user.coin[:2])
+                    return render(request, 'transfer.html', {'message': message , 'user':user})
+                
+                else:
+                    message = "Your balance is not enough"
+                    return render(request, 'transfer.html', {'message': message , 'user':user})
+            
+            except User.DoesNotExist:
+                message = "No user found"
+                return render(request, 'transfer.html', {'message': message , 'user':user})
+        
+        else:
+            message = "There is an empty field"
+            return render(request, 'transfer.html', {'message': message , 'user':user})
+    
+    return render(request, 'transfer.html' , {'user':user})
 @csrf_protect
 def deposite(request):
-    return render(request , 'deposite.html')
+    national_id = request.session.get('nationalId')
+    user = get_object_or_404(User, national_id=national_id)
+    
+    if request.method == "POST":
+        coin = request.POST.get('coins')
+        amount = request.POST.get('amount')
+
+        if coin and amount:
+            amount = float(amount)
+            if coin == user.coin:
+                user.balance += amount
+            else:
+                if user.coin == "Egypt":
+                    if coin == "Dollar":
+                        user.balance += amount * 47.89
+                    elif coin == "Riyal Soudi":
+                        user.balance += amount * 12.77
+                    elif coin == "Dirham":
+                        user.balance += amount * 13.04
+                elif user.coin == "Dollar":
+                    if coin == "Egypt":
+                        user.balance += amount / 47.89
+                    elif coin == "Riyal Soudi":
+                        user.balance += amount / 3.7506
+                    elif coin == "Dirham":
+                        user.balance += amount / 3.6729
+                elif user.coin == "Dirham":
+                    if coin == "Egypt":
+                        user.balance += amount / 13.04
+                    elif coin == "Riyal Soudi":
+                        user.balance += amount / 1.0212
+                    elif coin == "Dollar":
+                        user.balance += amount * 3.6729
+                elif user.coin == "Riyal Soudi":
+                    if coin == "Dollar":
+                        user.balance += amount * 3.7506
+                    elif coin == "Egypt":
+                        user.balance += amount / 12.77
+                    elif coin == "Dirham":
+                        user.balance += amount * 1.0212
+
+            user.save()
+            message = f"Success! Your balance is {user.balance} {user.coin[:2]}"
+            icon = "success"
+        else:
+            message = "There is an empty field"
+            icon = "error"
+        return render(request, 'deposite.html', {'message': message , "icon" : icon , "user":user })
+    return render(request, 'deposite.html' , {"user":user })
 def home(request):
     nationalId = request.session.get('nationalId')
     user = User.objects.get(national_id = nationalId)
-    return render(request , 'Home.html' , {'user' : user})
+    transfers = Transfers.objects.filter(Q(from_user=user) | Q(to_user=user))
+    return render(request , 'Home.html' , {'user' : user  , 'transfers':transfers})
 def profile(request):
     nationalId = request.session.get('nationalId')
-    user = User.objects.get(national_id = nationalId)
-    return render(request , 'profile.html', {'user' : user})
+    user = User.objects.get(national_id=nationalId)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        coins = request.POST.get('coin')
+        if coins == user.coin:
+            user.balance = float(user.balance)
+        if user.coin == "Egypt":
+            if coins == "Dollar":
+                user.balance = float(user.balance) / 47.89
+            elif coins == "Riyal Soudi":
+                user.balance = float(user.balance) / 12.77
+            elif coins == "Dirham":
+                user.balance = float(user.balance) / 13.04
+        elif user.coin == "Dollar":
+            if coins == "Egypt":
+                user.balance = float(user.balance) * 47.89
+            elif coins == "Riyal Soudi":
+                user.balance = float(user.balance) * 3.7506
+            elif coins == "Dirham":
+                user.balance = float(user.balance) * 3.6729
+        elif user.coin == "Dirham":
+            if coins == "Egypt":
+                user.balance = float(user.balance) * 13.04
+            elif coins == "Riyal Soudi":
+                user.balance = float(user.balance) / 1.0212
+            elif coins == "Dollar":
+                user.balance = float(user.balance) / 3.6729
+        elif user.coin == "Riyal Soudi":
+                if coins == "Dollar":
+                    user.balance = float(user.balance) / 3.7506
+                elif coins == "Egypt":
+                    user.balance = float(user.balance) * 12.77
+                elif coins == "Dirham":
+                    user.balance = float(user.balance) * 1.0212
+        user.coin = coins
+        user.phone = phone
+        user.mobile = phone
+        user.email = email
+        user.password = password
+        user.name = name
+        user.balance = user.balance
+        user.governorate = user.governorate
+        user.national_id = user.national_id
+        user.date_of_creation = user.date_of_creation
+        user.save()
+        return render(request, 'profile.html', {'user': user , 'CheckUpdate':"true"})
+    return render(request, 'profile.html', {'user': user})
+
