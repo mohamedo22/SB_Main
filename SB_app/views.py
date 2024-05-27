@@ -21,7 +21,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-import requests
 config = {
     "apiKey": "AIzaSyDgqQ6j8ETLMvy_cjLsh-crdJ7tN8_ldUo",
     "authDomain": "sbank-30589.firebaseapp.com",
@@ -124,9 +123,13 @@ def withdraw(request):
         if user.balance >=float(amount):
             user.balance -= float(amount)
             user.save()
-            return render(request , 'withdrow.html' , {"process" : "pass" , 'user':user})
+            icon = 'success'
+            message = f'Success Process Your Balance is {user.balance}'
+            return render(request , 'withdrow.html' , {"icon" : icon , 'user':user , 'message' : message})
         else:
-            return render(request , 'withdrow.html' , {"process" : "fail" , 'user':user})
+            icon = 'error'
+            message = f'Fail process Your balance is not Enough : Your balance is  {user.balance}'
+            return render(request , 'withdrow.html' , {"icon" : icon , "message":message , 'user':user})
     return render(request , 'withdrow.html' , {'user':user})
 @csrf_protect
 @login_required(login_url='signUp')
@@ -134,54 +137,41 @@ def transfer(request):
     national_id = request.session.get('nationalId')
     user = get_object_or_404(User, national_id=national_id)
     if request.method == "POST":
-        user2_email = request.POST.get('toAccount')
+        user2_name = request.POST.get('user')
         amount = request.POST.get('amount')
-        
-        if user2_email and amount:
+        if user2_name and amount:
             try:
-                user2 = User.objects.filter( email = user2_email ).first()
-                
-                if user.balance >= float(amount):
-                    if user.coin == user2.coin:
-                        user2.balance += float(amount)
-                    api_key = '0e1e0d70dbf18d9ddbc665f1'
-                    base_url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{user.coin}"
-                    response = requests.get(base_url)
-                    if response.status_code == 200:
-                        exchange_rates = response.json()['conversion_rates']
-                        exchange_rate = exchange_rates.get(user2.coin)
-                        
-                        if exchange_rate:
-                            user2.balance += float(amount) * exchange_rate
-                        else:
-                            raise ValueError("Exchange rate not available for the specified currency.")
-                    else:
-                        raise ValueError("Error fetching exchange rates.")
-                    
+                user2 = User.objects.filter( name = user2_name ).first()
+                if(user.balance >= float(amount)):
+                    user2.balance += float(amount) 
                     user.balance -= float(amount)
                     new_process = Transfers.objects.create(
-                        balance=float(amount),
-                        date_of_process = datetime.now().strftime("%Y-%m-%d"),
-                        from_user=user,
-                        to_user=user2
-                    )
+                            balance=float(amount),
+                            date_of_process = datetime.now().strftime("%Y-%m-%d"),
+                            from_user=user,
+                            to_user=user2
+                        )
                     user.save()
                     user2.save()
                     new_process.save()
                     message = "Success Process Your balance is {} {}".format(user.balance, user.coin[:2])
-                    return render(request, 'transfer.html', {'message': message , 'user':user})
+                    icon = "success"
+                    return render(request, 'transfer.html', {'message': message , 'user':user , 'icon' : icon})
                 
                 else:
                     message = "Your balance is not enough"
-                    return render(request, 'transfer.html', {'message': message , 'user':user})
+                    icon = "error"
+                    return render(request, 'transfer.html', {'message': message , 'user':user , 'icon' :icon})
             
             except User.DoesNotExist:
                 message = "No user found"
-                return render(request, 'transfer.html', {'message': message , 'user':user})
+                icon ="error"
+                return render(request, 'transfer.html', {'message': message , 'user':user, 'icon' :icon})
         
         else:
             message = "There is an empty field"
-            return render(request, 'transfer.html', {'message': message , 'user':user})
+            icon="error"
+            return render(request, 'transfer.html', {'message': message , 'user':user, 'icon' :icon})
     
     return render(request, 'transfer.html' , {'user':user})
 @csrf_protect
@@ -189,45 +179,11 @@ def transfer(request):
 def deposite(request):
     national_id = request.session.get('nationalId')
     user = get_object_or_404(User, national_id=national_id)
-    
     if request.method == "POST":
-        coin = request.POST.get('coins')
         amount = request.POST.get('amount')
-
-        if coin and amount:
+        if amount:
             amount = float(amount)
-            if coin == user.coin:
-                user.balance += amount
-            else:
-                if user.coin == "Egypt":
-                    if coin == "Dollar":
-                        user.balance += amount * 47.89
-                    elif coin == "Riyal Soudi":
-                        user.balance += amount * 12.77
-                    elif coin == "Dirham":
-                        user.balance += amount * 13.04
-                elif user.coin == "Dollar":
-                    if coin == "Egypt":
-                        user.balance += amount / 47.89
-                    elif coin == "Riyal Soudi":
-                        user.balance += amount / 3.7506
-                    elif coin == "Dirham":
-                        user.balance += amount / 3.6729
-                elif user.coin == "Dirham":
-                    if coin == "Egypt":
-                        user.balance += amount / 13.04
-                    elif coin == "Riyal Soudi":
-                        user.balance += amount / 1.0212
-                    elif coin == "Dollar":
-                        user.balance += amount * 3.6729
-                elif user.coin == "Riyal Soudi":
-                    if coin == "Dollar":
-                        user.balance += amount * 3.7506
-                    elif coin == "Egypt":
-                        user.balance += amount / 12.77
-                    elif coin == "Dirham":
-                        user.balance += amount * 1.0212
-
+            user.balance+=amount
             user.save()
             message = f"Success! Your balance is {user.balance} {user.coin[:2]}"
             icon = "success"
@@ -251,38 +207,6 @@ def profile(request):
         phone = request.POST.get('phone')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        coins = request.POST.get('coin')
-        if coins == user.coin:
-            user.balance = float(user.balance)
-        if user.coin == "Egypt":
-            if coins == "Dollar":
-                user.balance = float(user.balance) / 47.89
-            elif coins == "Riyal Soudi":
-                user.balance = float(user.balance) / 12.77
-            elif coins == "Dirham":
-                user.balance = float(user.balance) / 13.04
-        elif user.coin == "Dollar":
-            if coins == "Egypt":
-                user.balance = float(user.balance) * 47.89
-            elif coins == "Riyal Soudi":
-                user.balance = float(user.balance) * 3.7506
-            elif coins == "Dirham":
-                user.balance = float(user.balance) * 3.6729
-        elif user.coin == "Dirham":
-            if coins == "Egypt":
-                user.balance = float(user.balance) * 13.04
-            elif coins == "Riyal Soudi":
-                user.balance = float(user.balance) / 1.0212
-            elif coins == "Dollar":
-                user.balance = float(user.balance) / 3.6729
-        elif user.coin == "Riyal Soudi":
-                if coins == "Dollar":
-                    user.balance = float(user.balance) / 3.7506
-                elif coins == "Egypt":
-                    user.balance = float(user.balance) * 12.77
-                elif coins == "Dirham":
-                    user.balance = float(user.balance) * 1.0212
-        user.coin = coins
         user.phone = phone
         user.mobile = phone
         user.email = email

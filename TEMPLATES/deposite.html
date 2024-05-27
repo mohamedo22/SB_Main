@@ -108,14 +108,14 @@
             margin-top: 1rem;
         }
         .back
-{
-    text-decoration: none;
-    color: black;
-    font-size: 1.2rem;
-    position: absolute;
-    top: 3rem;
-    left: 3rem;
-}
+      {
+          text-decoration: none;
+          color: black;
+          font-size: 1.2rem;
+          position: absolute;
+          top: 3rem;
+          left: 3rem;
+      }
 </style>
 </head>
 <body oncontextmenu="return false">
@@ -127,19 +127,7 @@
     <form method="POST">
       {% csrf_token %}
       <ul style="list-style-type: none; padding: 0;">
-        <li class="form-group">
-          <label for="coins">Coins</label>
-          <div class="input-field">
-            <span class="input-icon">🏦</span>
-            <select id="coins" name="coins" required>
-              <option value="">Select coin</option>
-              <option value="EGP">EGP</option>
-              <option value="USD">USD</option>
-              <option value="AED">AED</option>
-              <option value="SAR">SAR</option>
-            </select>
-          </div>
-        </li>
+        
         <li class="form-group">
           <label for="amount">Amount</label>
           <div class="input-field">
@@ -165,7 +153,7 @@
     let icon = document.getElementById("icon");
       window.onload = function() {
             Swal.fire({
-                title:"Error!",
+                title:`${icon.innerText}!`,
                 text: `${message.innerText}`,
                 icon: `${icon.innerText}`,
             });

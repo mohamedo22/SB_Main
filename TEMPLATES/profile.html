@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/x-icon" href="{% static 'images/Sewedy_img.png' %}">
+<script src="https://kit.fontawesome.com/a0dcba6903.js" crossorigin="anonymous"></script>
 <title>Profile</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
@@ -116,9 +117,79 @@
   .submit-btn:hover {
     background-color: #cc0000;
   }
+  .loading {
+    --speed-of-animation: 0.9s;
+    --gap: 6px;
+    --first-color: #4c86f9;
+    --second-color: #49a84c;
+    --third-color: #f6bb02;
+    --fourth-color: #f6bb02;
+    --fifth-color: #2196f3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    gap: 6px;
+    height: 100px;
+   }
+   
+   .loading span {
+    width: 4px;
+    height: 50px;
+    background: var(--first-color);
+    animation: scale var(--speed-of-animation) ease-in-out infinite;
+   }
+   
+   .loading span:nth-child(2) {
+    background: var(--second-color);
+    animation-delay: -0.8s;
+   }
+   
+   .loading span:nth-child(3) {
+    background: var(--third-color);
+    animation-delay: -0.7s;
+   }
+   
+   .loading span:nth-child(4) {
+    background: var(--fourth-color);
+    animation-delay: -0.6s;
+   }
+   
+   .loading span:nth-child(5) {
+    background: var(--fifth-color);
+    animation-delay: -0.5s;
+   }
+   
+   @keyframes scale {
+    0%, 40%, 100% {
+     transform: scaleY(0.05);
+    }
+   
+    20% {
+     transform: scaleY(1);
+    }
+   }
+   .back
+{
+    text-decoration: none;
+    color: black;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 3rem;
+    left: 3rem;
+}
+   
 </style>
 </head>
 <body oncontextmenu="return false">
+  <a href="{% url "home" %}" class="back"><i class="fa-solid fa-chevron-left"></i> Back</a>
+  <div class="loading">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
   <div class="container">
     <div class="user-header">
       <img src="{{user.image.url}}" alt="User Image">
@@ -149,7 +220,7 @@
       </div>
       <div>
         <label for="balance">Balance</label>
-        <input type="text" id="balance" name="balance" value="{{user.balance}}" readonly>
+        <input type="text" id="balance" name="balance" value="{{user.balance}}  {{user.coin}}" readonly>
       </div>
       <div>
         <label for="date_of_creation">Date of Creation</label>
@@ -159,20 +230,23 @@
         <label for="governorate">Governorate</label>
         <input type="text" id="governorate" name="governorate" value="{{user.governorate}}" readonly>
       </div>
-      <div>
-        <label for="coin">Coin</label>
-        <select id="coin" name="coin">
-          <option value="USD" {% if user.coin == "USD" %}selected{% endif %}>Dollar</option>
-          <option value="EGP" {% if user.coin == "EGP" %}selected{% endif %}>Egypt Pound</option>
-          <option value="SAR" {% if user.coin == "SAR" %}selected{% endif %}>Riyal Saudi</option>
-          <option value="AED" {% if user.coin == "AED" %}selected{% endif %}>Dirham</option>
-        </select>
-      </div>
       <button type="submit" class="submit-btn">Save Changes</button>
     </form>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
+    function showLoader() {
+      document.querySelector('.loading').style.display = 'flex';
+      document.querySelector('.container').style.display = 'none';
+    }
+    showLoader()
+    function hideLoader() {
+      document.querySelector('.loading').style.display = 'none';
+      document.querySelector('.container').style.display = 'block';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      hideLoader()
+    });
     function togglePassword() {
       const passwordField = document.getElementById('password');
       const showButton = passwordField.nextElementSibling;

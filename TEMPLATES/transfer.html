@@ -51,12 +51,23 @@
     transition: border-color 0.3s ease;
   }
 
-  .input-field input {
+  .input-field input,
+  .input-field select{
     border: none;
     outline: none;
     width: 100%;
     margin-left: 10px;
     font-size: 16px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
   }
 
   .input-field:focus-within {
@@ -69,7 +80,7 @@
   }
 
   .btn {
-    background-color: #e60000;
+    background-color: silver;
     color: #fff;
     border: none;
     padding: 12px 20px;
@@ -84,11 +95,12 @@
   }
 
   .btn:hover {
-    background-color: #cc0000;
+    background-color: silver;
   }
 
   .form-group {
     margin-bottom: 20px;
+    list-style:none;
   }
 
   .form-group label {
@@ -102,6 +114,14 @@
     font-size: 14px;
     color: #888;
     margin-top: 5px;
+    display:flex;
+    align-items:center;
+    justify-content: right;
+  }
+  .help-text a
+  {
+    text-decoration: none;
+    color:black;
   }
   #image
         {
@@ -120,7 +140,7 @@
 }
 </style>
 </head>
-<body oncontextmenu="return false">
+<body oncontextmenu="return ">
   <a href="{% url "home" %}" class="back"><i class="fa-solid fa-chevron-left"></i> Back</a>
   <div class="container">
     <h2>Money Transfer</h2>
@@ -128,39 +148,63 @@
     <div style="display:flex; align-items:center; gap:1rem;">
       <form  method="POST">
         {% csrf_token %}
-        <div class="form-group">
-          <label for="toAccount">To Account</label>
+        <li class="form-group">
+          <label for="user">Users</label>
           <div class="input-field">
-            <span class="input-icon">🏦</span>
-            <input type="text" id="toAccount" name="toAccount" placeholder="Enter recipient's account number" required>
+            <span class="input-icon">👤</span>
+            <select id="user" name="user" required>
+              <option value="">Select User</option>
+              <option value="Mohamed">Mohamed</option>
+              <option value="Hassan">Hassan</option>
+              <option value="Ahmed">Ahmed</option>
+            </select>
           </div>
-          <p class="help-text">Make sure this is the correct account Email.</p>
-        </div>
+        </li>
         <div class="form-group">
           <label for="amount">Amount</label>
           <div class="input-field">
             <span class="input-icon">💵</span>
             <input type="number" id="amount" name="amount" placeholder="Enter amount" required>
           </div>
-          <p class="help-text">Make sure the amount is correct.</p>
+          <p class="help-text">تاكد أن المبلغ صحيح</p>
+          <p class="help-text"><input type="checkbox" name="" id="firstCheckBox"><a href="#">اوافق علي الشروط والاحكام</a></p>
+          <p class="help-text"><input type="checkbox" name="" id="SecondCheckBox"><a href="#">انا اتحمل مسؤولية الاخطاء</a></p>
         </div>
-        <button type="submit" class="btn">Transfer</button>
+        <button type="submit" class="btn" disabled="true">Transfer</button>
       </form>
       <img src="{% static 'images/transfar.png' %}" id="image" alt="">
     </div>
   </div>
-  {% if message %}
+  {% if message and icon %}
       <p id="message" hidden>{{message}}</p>
+      <p id="icon" hidden>{{icon}}</p>
   {% endif %}
   <script>
       let message = document.getElementById("message");
+      let icon = document.getElementById("icon");
       window.onload = function() {
             Swal.fire({
-                
+                title:`${icon.innerText}`,
                 text: `${message.innerText}`,
-                icon: "info",
+                icon: `${icon.innerText}`,
             });
       }
+      let first  = document.getElementById("firstCheckBox");
+      let second = document.getElementById("SecondCheckBox");
+      setInterval(function(){
+          if(first.checked && second.checked)
+              {
+                  let button =  document.querySelector(".btn");
+                  button.disabled = false;
+                  button.style.backgroundColor = "#e60000"
+              }
+          else
+          {
+            let button =  document.querySelector(".btn");
+                  button.disabled = true;
+                  button.style.backgroundColor = "silver"
+          }
+      },1)
   </script>
 </body>
 </html>

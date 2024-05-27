@@ -133,23 +133,20 @@
       <img src="{% static 'images/withdraw.png' %}" id="image" alt="">
     </div>
   </div>
-  <p id="state" hidden>{{process}}</p>
+  {% if message and icon %}
+    <p id="message" hidden>{{message}}</p>
+    <p id="icon" hidden>{{icon}}</p>
+  {% endif %}
   <script>
-    let process = document.getElementById("state").innerText;
-    if(process == "pass")
-    {
-        Swal.fire({
-          title:"Success Process!",
-          icon: "success",
-      });
-    }
-    else if(process == "fail")
-    {
-        Swal.fire({
-          title:"Fail Process!",
-          icon: "error",
-      });
-    }
+    let message = document.getElementById("message");
+    let icon = document.getElementById("icon");
+      window.onload = function() {
+            Swal.fire({
+                title:`${icon.innerText}!`,
+                text: `${message.innerText}`,
+                icon: `${icon.innerText}`,
+            });
+      }
   </script>
 </body>
 </html>
