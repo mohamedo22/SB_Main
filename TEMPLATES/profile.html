@@ -162,10 +162,10 @@
       <div>
         <label for="coin">Coin</label>
         <select id="coin" name="coin">
-          <option value="Dollar" {% if user.coin == "Dollar" %}selected{% endif %}>Dollar</option>
-          <option value="Egypt" {% if user.coin == "Egypt" %}selected{% endif %}>Egypt Pound</option>
-          <option value="Riyal Soudi" {% if user.coin == "Riyal Soudi" %}selected{% endif %}>Riyal Saudi</option>
-          <option value="Dirham" {% if user.coin == "Dirham" %}selected{% endif %}>Dirham</option>
+          <option value="USD" {% if user.coin == "USD" %}selected{% endif %}>Dollar</option>
+          <option value="EGP" {% if user.coin == "EGP" %}selected{% endif %}>Egypt Pound</option>
+          <option value="SAR" {% if user.coin == "SAR" %}selected{% endif %}>Riyal Saudi</option>
+          <option value="AED" {% if user.coin == "AED" %}selected{% endif %}>Dirham</option>
         </select>
       </div>
       <button type="submit" class="submit-btn">Save Changes</button>

@@ -21,6 +21,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
+import requests
 config = {
     "apiKey": "AIzaSyDgqQ6j8ETLMvy_cjLsh-crdJ7tN8_ldUo",
     "authDomain": "sbank-30589.firebaseapp.com",
@@ -143,34 +144,19 @@ def transfer(request):
                 if user.balance >= float(amount):
                     if user.coin == user2.coin:
                         user2.balance += float(amount)
-                    elif user2.coin == "Egypt":
-                        if user.coin == "Dollar":
-                            user2.balance += float(amount) * 47.89
-                        elif user.coin == "Riyal Soudi":
-                            user2.balance += float(amount) * 12.77
-                        elif user.coin == "Dirham":
-                            user2.balance += float(amount) * 13.04
-                    elif user2.coin == "Dollar":
-                        if user.coin == "Egypt":
-                            user2.balance += float(amount) / 47.89
-                        elif user.coin == "Riyal Soudi":
-                            user2.balance += float(amount) / 3.7506
-                        elif user.coin == "Dirham":
-                            user2.balance += float(amount) / 3.6729
-                    elif user2.coin == "Dirham":
-                        if user.coin == "Egypt":
-                            user2.balance += float(amount) / 13.04
-                        elif user.coin == "Riyal Soudi":
-                            user2.balance += float(amount) / 1.0212
-                        elif user.coin == "Dollar":
-                            user2.balance += float(amount) * 3.6729
-                    elif user2.coin == "Riyal Soudi":
-                        if user.coin == "Dollar":
-                            user2.balance += float(amount) * 3.7506
-                        elif user.coin == "Egypt":
-                            user2.balance += float(amount) / 12.77
-                        elif user.coin == "Dirham":
-                            user2.balance += float(amount) * 1.0212
+                    api_key = '0e1e0d70dbf18d9ddbc665f1'
+                    base_url = f"https://v6.exchangerate-api.com/v6/{api_key}/latest/{user.coin}"
+                    response = requests.get(base_url)
+                    if response.status_code == 200:
+                        exchange_rates = response.json()['conversion_rates']
+                        exchange_rate = exchange_rates.get(user2.coin)
+                        
+                        if exchange_rate:
+                            user2.balance += float(amount) * exchange_rate
+                        else:
+                            raise ValueError("Exchange rate not available for the specified currency.")
+                    else:
+                        raise ValueError("Error fetching exchange rates.")
                     
                     user.balance -= float(amount)
                     new_process = Transfers.objects.create(
